@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package overlord;
+
+option go_package = "./overlord";
+
+message Status {
+  string status = 1;
+}
+
+service Overlord {
+  rpc GetIntegratorConfig(GetIntegratorConfigIn) returns (GetIntegratorConfigOut) {}
+  rpc SaveParams(SaveParamsIn) returns (SaveParamsOut) {}
+  rpc HealthCheck         (stream Status)           returns (stream Status) {}
+}
+
+
+message GetIntegratorConfigIn {
+  string integrator = 1;
+  string game = 2;
+}
+
+message GetIntegratorConfigOut {
+  int64 default_wager = 1;
+  repeated int64 wager_levels = 2;
+  map<string, int64> multipliers = 3;
+}
+
+message SaveParamsIn{
+  string  integrator = 1;
+  string  game = 2;
+  optional int64   rtp = 3;
+  repeated int64   wagers = 4;
+  bool   buy_bonus = 5;
+  bool   gamble = 6;
+  bool   double_chance = 7;
+  string session_id = 8;
+  optional string   volatility = 9;
+  bool   is_demo = 10;
+  string  currency = 11;
+  string user_id = 12;
+  string user_locale = 13;
+  optional int64   default_wager = 14;
+  string  jurisdiction = 15;
+  string  lobby_url = 16;
+  bool    show_cheats = 17;
+  bool    low_balance = 18;
+  bool short_link = 19;
+}
+
+message SaveParamsOut{
+}

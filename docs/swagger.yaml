@@ -1,0 +1,5592 @@
+definitions:
+  auth.Auth:
+    properties:
+      access_token:
+        type: string
+      created_at:
+        type: string
+      expired_at:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  entities.Account:
+    properties:
+      auth_provider:
+        type: string
+      auth_provider_id:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      operators:
+        items:
+          $ref: '#/definitions/entities.Organization'
+        type: array
+      organizations:
+        items:
+          $ref: '#/definitions/entities.Organization'
+        type: array
+      permissions:
+        description: |-
+          Permissions []*Permission `json:"permissions" gorm:"many2many:account_permissions;foreignKey:id;joinForeignKey:account_id;joinReferences:permission_id;references:id"`
+          computed
+        items:
+          $ref: '#/definitions/entities.Permission'
+        type: array
+      reset_password_expires_at:
+        type: string
+      reset_password_token:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entities.Role'
+        type: array
+      status:
+        type: integer
+      totp_enabled:
+        type: boolean
+      totp_secret:
+        type: string
+      totp_url:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entities.AggregatedReportByGame:
+    properties:
+      award:
+        type: number
+      award_per_user:
+        type: number
+      currency:
+        type: string
+      game:
+        type: string
+      game_id:
+        type: string
+      pfr_award:
+        type: number
+      pfr_revenue:
+        type: number
+      pfr_round_count:
+        type: integer
+      pfr_wager:
+        type: number
+      revenue:
+        type: number
+      revenue_per_user:
+        type: number
+      round_count:
+        type: integer
+      round_per_user:
+        type: number
+      rtp:
+        description: computed
+        type: number
+      user_count:
+        type: integer
+      wager:
+        type: number
+      wager_per_user:
+        type: number
+    type: object
+  entities.Currency:
+    properties:
+      additional_alias_rate:
+        type: number
+      alias:
+        type: string
+      base_currency:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  entities.CurrencyAttributes:
+    properties:
+      multiplier:
+        type: integer
+      synonym:
+        type: string
+      title:
+        type: string
+    type: object
+  entities.CurrencyExchange:
+    properties:
+      created_at:
+        type: string
+      from:
+        type: string
+      rate:
+        type: number
+      to:
+        type: string
+    type: object
+  entities.CurrencyMultiplier:
+    properties:
+      multiplier:
+        type: integer
+      organization_pair_id:
+        type: string
+      provider_integrator_pair:
+        $ref: '#/definitions/entities.ProviderIntegratorPair'
+      synonym:
+        type: string
+      title:
+        type: string
+    type: object
+  entities.FileReportResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  entities.FileResponse:
+    properties:
+      createdAt:
+        type: string
+      error:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/entities.FileStatus'
+      type:
+        $ref: '#/definitions/entities.FileType'
+    type: object
+  entities.FileStatus:
+    enum:
+    - inProgress
+    - ready
+    - error
+    type: string
+    x-enum-varnames:
+    - FileStatusInProgress
+    - FileStatusReady
+    - FileStatusError
+  entities.FileType:
+    enum:
+    - csv
+    - xlsx
+    type: string
+    x-enum-varnames:
+    - FileCSV
+    - FileXLSX
+  entities.FinancialReport:
+    properties:
+      award:
+        type: number
+      award_with_pfr:
+        type: number
+      award_without_pfr:
+        type: number
+      margin:
+        type: number
+      revenue:
+        description: computed
+        type: number
+      rtp:
+        type: number
+      rtp_with_turnover:
+        type: number
+      spin_quantity:
+        type: integer
+      user_quantity:
+        type: integer
+      wager:
+        type: number
+      wager_with_pfr:
+        type: number
+      wager_without_pfr:
+        type: number
+    type: object
+  entities.Game:
+    properties:
+      api_url:
+        type: string
+      available_rtp:
+        items:
+          type: integer
+        type: array
+      available_volatility:
+        items:
+          type: string
+        type: array
+      available_wager_sets:
+        items:
+          $ref: '#/definitions/entities.WagerSet'
+        type: array
+      available_wager_sets_id:
+        items:
+          type: string
+        type: array
+      client_url:
+        type: string
+      currencies:
+        items:
+          type: string
+        type: array
+      gamble_double_up:
+        type: integer
+      id:
+        type: string
+      is_demo:
+        type: boolean
+      is_freespins:
+        type: boolean
+      is_public:
+        type: boolean
+      is_statistic_shown:
+        type: boolean
+      jurisdictions:
+        items:
+          type: string
+        type: array
+      languages:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      online_volatility:
+        type: boolean
+      organization:
+        $ref: '#/definitions/entities.Organization'
+      organization_id:
+        type: string
+      rtp:
+        type: integer
+      user_locales:
+        items:
+          type: string
+        type: array
+      volatility:
+        type: string
+      wager_set:
+        $ref: '#/definitions/entities.WagerSet'
+      wager_set_id:
+        type: string
+    type: object
+  entities.GamingSession:
+    properties:
+      award:
+        type: number
+      award_with_pfr:
+        type: number
+      award_without_pfr:
+        type: number
+      base_award:
+        type: number
+      bonus_award:
+        type: number
+      created_at:
+        type: string
+      currency:
+        type: string
+      end_balance:
+        type: number
+      external_user_id:
+        type: string
+      final_award:
+        type: number
+      game:
+        type: string
+      game_id:
+        type: string
+      integrator:
+        type: string
+      margin:
+        type: number
+      operator:
+        type: string
+      revenue:
+        type: number
+      rtp:
+        type: number
+      rtp_with_turnover:
+        type: number
+      session_token:
+        type: string
+      spins:
+        items:
+          $ref: '#/definitions/entities.Spin'
+        type: array
+      start_balance:
+        description: spins aggregations
+        type: number
+      user_id:
+        type: string
+      wager:
+        type: number
+      wager_with_pfr:
+        description: computed
+        type: number
+      wager_without_pfr:
+        type: number
+    type: object
+  entities.IntegratorGame:
+    properties:
+      game:
+        $ref: '#/definitions/entities.Game'
+      game_id:
+        type: string
+      organization:
+        $ref: '#/definitions/entities.Organization'
+      organization_id:
+        type: string
+      rtp:
+        type: integer
+      short_link:
+        type: boolean
+      volatility:
+        type: string
+      wager_set:
+        $ref: '#/definitions/entities.WagerSet'
+      wager_set_id:
+        type: string
+    type: object
+  entities.IntegratorGameWagerSet:
+    properties:
+      currency:
+        type: string
+      game:
+        $ref: '#/definitions/entities.Game'
+      game_id:
+        type: string
+      organization:
+        $ref: '#/definitions/entities.Organization'
+      organization_id:
+        type: string
+      wager_set:
+        $ref: '#/definitions/entities.WagerSet'
+      wager_set_id:
+        type: string
+    type: object
+  entities.Organization:
+    properties:
+      api_key:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: integer
+      type:
+        type: string
+    type: object
+  entities.Permission:
+    properties:
+      action:
+        type: string
+      description:
+        type: string
+      endpoint:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      subject:
+        type: string
+    type: object
+  entities.ProviderIntegratorPair:
+    properties:
+      id:
+        type: string
+      integrator:
+        $ref: '#/definitions/entities.Organization'
+      integrator_id:
+        type: string
+      provider:
+        $ref: '#/definitions/entities.Organization'
+      provider_id:
+        type: string
+    type: object
+  entities.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      organization:
+        $ref: '#/definitions/entities.Organization'
+      organization_id:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/entities.Permission'
+        type: array
+      type:
+        type: string
+    type: object
+  entities.Session:
+    properties:
+      account:
+        $ref: '#/definitions/entities.Account'
+      currency:
+        type: string
+      id:
+        type: string
+      organization_id:
+        type: string
+    type: object
+  entities.Spin:
+    properties:
+      base_award:
+        type: number
+      bonus_award:
+        type: number
+      client_ip:
+        type: string
+      country:
+        type: string
+      created_at:
+        type: string
+      currency:
+        type: string
+      end_balance:
+        type: number
+      external_user_id:
+        type: string
+      final_award:
+        type: number
+      game:
+        type: string
+      game_id:
+        type: string
+      host:
+        type: string
+      id:
+        type: string
+      integrator:
+        type: string
+      is_pfr:
+        type: boolean
+      is_shown:
+        type: boolean
+      operator:
+        type: string
+      request:
+        type: string
+      restoring_indexes:
+        type: string
+      session_token:
+        type: string
+      spin:
+        type: string
+      start_balance:
+        type: number
+      updated_at:
+        type: string
+      user_agent:
+        type: string
+      user_id:
+        type: string
+      wager:
+        type: number
+    type: object
+  entities.UserReport:
+    properties:
+      award:
+        type: number
+      award_with_pfr:
+        type: number
+      award_without_pfr:
+        type: number
+      created_at:
+        type: string
+      currency:
+        type: string
+      end_balance:
+        type: number
+      integrator:
+        type: string
+      margin:
+        type: number
+      operator:
+        type: string
+      revenue:
+        type: number
+      rtp:
+        type: number
+      rtp_with_turnover:
+        type: number
+      start_balance:
+        description: spins aggregations
+        type: number
+      updated_at:
+        type: string
+      wager:
+        type: number
+      wager_with_pfr:
+        description: computed
+        type: number
+      wager_without_pfr:
+        type: number
+    type: object
+  entities.WagerSet:
+    properties:
+      created_at:
+        type: string
+      default_wager:
+        type: integer
+      id:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      organization_id:
+        type: string
+      updated_at:
+        type: string
+      wager_levels:
+        items:
+          type: integer
+        type: array
+    type: object
+  requests.AccountOperatorRequest:
+    properties:
+      integrator_id:
+        type: string
+      operator_id:
+        type: string
+    required:
+    - integrator_id
+    - operator_id
+    type: object
+  requests.AccountOrganizationRequest:
+    properties:
+      organization_id:
+        type: string
+    required:
+    - organization_id
+    type: object
+  requests.AccountRoleRequest:
+    properties:
+      role_id:
+        type: string
+    required:
+    - role_id
+    type: object
+  requests.AuthenticateRequest:
+    properties:
+      id:
+        type: string
+      provider:
+        type: string
+      token:
+        type: string
+    type: object
+  requests.ChangePasswordRequest:
+    properties:
+      confirm_password:
+        minLength: 8
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+      password:
+        type: string
+    required:
+    - confirm_password
+    - new_password
+    - password
+    type: object
+  requests.CreateAccountRequest:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      operator_id:
+        type: string
+      role_id:
+        type: string
+      token:
+        type: string
+    required:
+    - first_name
+    - id
+    - role_id
+    - token
+    type: object
+  requests.CreateWagerSetRequest:
+    properties:
+      default_wager:
+        type: integer
+      name:
+        type: string
+      wager_levels:
+        items:
+          type: integer
+        type: array
+    required:
+    - default_wager
+    - name
+    - wager_levels
+    type: object
+  requests.Currency:
+    properties:
+      additional_alias_rate:
+        minimum: 1
+        type: number
+      alias:
+        minLength: 1
+        type: string
+      base_currency:
+        type: string
+      title:
+        minLength: 1
+        type: string
+      type:
+        minLength: 1
+        type: string
+    required:
+    - additional_alias_rate
+    type: object
+  requests.CurrencyExchangeRequest:
+    properties:
+      from:
+        type: string
+      rate:
+        type: number
+    required:
+    - from
+    - rate
+    type: object
+  requests.CurrencyMultiplier:
+    properties:
+      multiplier:
+        type: integer
+      organization_pair_id:
+        type: string
+      synonym:
+        minLength: 1
+        type: string
+      title:
+        minLength: 1
+        type: string
+    type: object
+  requests.CurrencyMultiplierIdentify:
+    properties:
+      organization_pair_id:
+        type: string
+      title:
+        minLength: 1
+        type: string
+    type: object
+  requests.CurrencyOrganizationPair:
+    properties:
+      integrator_id:
+        type: string
+      provider_id:
+        type: string
+    type: object
+  requests.CurrencySearchRequest:
+    properties:
+      organization_pair_id:
+        type: string
+    type: object
+  requests.Dictionary:
+    properties:
+      value:
+        type: string
+    type: object
+  requests.GameListRequest:
+    properties:
+      organization_id:
+        type: string
+    type: object
+  requests.GameRequest:
+    properties:
+      api_url:
+        type: string
+      available_rtp:
+        items:
+          type: integer
+        type: array
+      available_volatility:
+        items:
+          type: string
+        type: array
+      available_wager_sets_id:
+        items:
+          type: string
+        type: array
+      client_url:
+        type: string
+      currencies:
+        items:
+          type: string
+        type: array
+      gamble_double_up:
+        type: integer
+      is_demo:
+        type: boolean
+      is_freespins:
+        type: boolean
+      is_public:
+        type: boolean
+      is_statistic_shown:
+        type: boolean
+      jurisdictions:
+        items:
+          type: string
+        type: array
+      languages:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      online_volatility:
+        type: boolean
+      organization_id:
+        type: string
+      rtp:
+        type: integer
+      user_locales:
+        items:
+          type: string
+        type: array
+      volatility:
+        type: string
+      wager_set_id:
+        type: string
+    required:
+    - available_wager_sets_id
+    - currencies
+    - is_demo
+    - is_freespins
+    - is_public
+    - is_statistic_shown
+    - jurisdictions
+    - languages
+    - name
+    - online_volatility
+    - organization_id
+    - user_locales
+    - wager_set_id
+    type: object
+  requests.IntegratorGameRequest:
+    properties:
+      game_id:
+        items:
+          type: string
+        type: array
+      wager_set_id:
+        type: string
+    required:
+    - game_id
+    type: object
+  requests.IntegratorGameWagerSetRequest:
+    properties:
+      currency:
+        type: string
+      game_id:
+        items:
+          type: string
+        type: array
+      wager_set_id:
+        type: string
+    required:
+    - game_id
+    type: object
+  requests.IntegratorOperatorPair:
+    properties:
+      integrator_id:
+        type: string
+      operator_id:
+        type: string
+    type: object
+  requests.LobbyRequest:
+    properties:
+      currency:
+        type: string
+      game:
+        type: string
+      integrator:
+        type: string
+      jurisdiction:
+        type: string
+      lobby_url:
+        type: string
+      low_balance:
+        type: boolean
+      rtp:
+        type: integer
+      session_id:
+        type: string
+      short_link:
+        type: boolean
+      show_cheats:
+        type: boolean
+      user_id:
+        type: string
+      user_locale:
+        type: string
+      volatility:
+        type: string
+      wager_set_id:
+        type: string
+    type: object
+  requests.ResetPassword:
+    properties:
+      confirm_password:
+        minLength: 8
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - confirm_password
+    - new_password
+    type: object
+  requests.ResetPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  requests.RolePermissionsRequest:
+    properties:
+      permissions:
+        items:
+          type: string
+        minItems: 1
+        type: array
+    required:
+    - permissions
+    type: object
+  requests.UpdateAccountRequest:
+    properties:
+      first_name:
+        description: ID        string `json:"id" validate:"required"`
+        type: string
+      last_name:
+        type: string
+    required:
+    - first_name
+    type: object
+  requests.UpdateIntegratorGameRequest:
+    properties:
+      game_id:
+        type: string
+      rtp:
+        type: integer
+      short_link:
+        type: boolean
+      volatility:
+        type: string
+      wager_set_id:
+        type: string
+    required:
+    - game_id
+    type: object
+  requests.UpdateIntegratorGameWagerSetRequest:
+    properties:
+      currency:
+        type: string
+      game_id:
+        type: string
+      new_currency:
+        type: string
+      new_wager_set_id:
+        type: string
+      wager_set_id:
+        type: string
+    required:
+    - game_id
+    type: object
+  requests.UpdateWagerSetRequest:
+    properties:
+      default_wager:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      wager_levels:
+        items:
+          type: integer
+        type: array
+    required:
+    - default_wager
+    - is_active
+    - name
+    - wager_levels
+    type: object
+  requests.UpsertOrganizationRequest:
+    properties:
+      name:
+        type: string
+      status:
+        type: integer
+      type:
+        type: string
+    required:
+    - name
+    - type
+    type: object
+  requests.UpsertPermissionRequest:
+    properties:
+      action:
+        type: string
+      description:
+        type: string
+      endpoint:
+        type: string
+      name:
+        type: string
+      subject:
+        type: string
+    required:
+    - action
+    - description
+    - endpoint
+    - name
+    - subject
+    type: object
+  requests.UpsertRoleRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  response.HealthResponse:
+    properties:
+      success:
+        type: string
+    type: object
+  response.InfoResponse:
+    properties:
+      tag:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      meta: {}
+      status:
+        type: integer
+      success:
+        type: boolean
+    type: object
+  totp.Request:
+    properties:
+      totp:
+        type: string
+    required:
+    - totp
+    type: object
+info:
+  contact: {}
+paths:
+  /api/accounts:
+    get:
+      consumes:
+      - application/json
+      description: All accounts.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: rows offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order field
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Account'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get account list.
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Create account.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateAccountRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Account'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create new account.
+      tags:
+      - accounts
+  /api/accounts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete account.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Delete account.
+      tags:
+      - accounts
+    get:
+      consumes:
+      - application/json
+      description: Get account information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Account'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get account.
+      tags:
+      - accounts
+    put:
+      consumes:
+      - application/json
+      description: update account.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateAccountRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Update account.
+      tags:
+      - accounts
+  /api/accounts/{id}/change_password:
+    post:
+      consumes:
+      - application/json
+      description: change account password.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: ChangePasswordRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Change account password.
+      tags:
+      - accounts
+  /api/accounts/{id}/operators:
+    post:
+      consumes:
+      - application/json
+      description: Add operator.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: AccountOperatorRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountOperatorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Account'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add operator.
+      tags:
+      - accounts
+  /api/accounts/{id}/organizations:
+    delete:
+      consumes:
+      - application/json
+      description: Delete operator.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: AccountOperatorRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountOperatorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Delete operator.
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Add organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: AccountOrganizationRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountOrganizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Account'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add organization.
+      tags:
+      - accounts
+  /api/accounts/{id}/roles:
+    delete:
+      consumes:
+      - application/json
+      description: Revoke role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: AccountRoleRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Revoke role.
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Add role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: account_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: AccountRoleRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Add role.
+      tags:
+      - accounts
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate account.
+      parameters:
+      - description: Authenticate
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AuthenticateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/auth.Auth'
+              type: object
+      summary: Authenticate.
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - X-Authenticate: []
+      summary: Logout.
+      tags:
+      - Auth
+  /api/auth/organization:
+    post:
+      consumes:
+      - application/json
+      description: Switch current organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: AccountOrganizationRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.AccountOrganizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Session'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Switch current organization.
+      tags:
+      - Auth
+  /api/auth/password/change:
+    post:
+      consumes:
+      - application/json
+      description: Change password.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: ChangePasswordRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Change password.
+      tags:
+      - Auth
+  /api/auth/password/reset:
+    post:
+      consumes:
+      - application/json
+      description: Reset password request.
+      parameters:
+      - description: ResetPasswordRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Reset password request.
+      tags:
+      - Auth
+  /api/auth/password/reset/{token}:
+    post:
+      consumes:
+      - application/json
+      description: Reset password.
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: ResetPassword
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.ResetPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Reset password.
+      tags:
+      - Auth
+  /api/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh tokens.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/auth.Auth'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Refresh tokens.
+      tags:
+      - Auth
+  /api/auth/session:
+    get:
+      consumes:
+      - application/json
+      description: Get account session.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Session'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Session.
+      tags:
+      - Auth
+  /api/auth/totp/generate:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate account.
+      parameters:
+      - description: totp.Request
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/totp.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Generate TOTP QR.
+      tags:
+      - TOTP
+  /api/currency:
+    delete:
+      consumes:
+      - application/json
+      description: Delete currency.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: alias
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete currency.
+      tags:
+      - currency
+    get:
+      consumes:
+      - application/json
+      description: Get all currencies` information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Currency'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get all currencies.
+      tags:
+      - currency
+    post:
+      consumes:
+      - application/json
+      description: Create new currency.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateCurrency
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Currency'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Currency'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create new currency.
+      tags:
+      - currency
+  /api/currency/{alias}:
+    get:
+      consumes:
+      - application/json
+      description: Get currency information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: alias
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Currency'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get currency.
+      tags:
+      - currency
+  /api/currency/{alias}/exchange:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing exchange rate between the specified "from" currency
+        and the "to" currency (alias).
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Alias of the 'to' currency.
+        in: path
+        name: alias
+        required: true
+        type: string
+      - description: CurrencyExchangeRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyExchangeRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Delete a currency exchange rate.
+      tags:
+      - currency
+    get:
+      consumes:
+      - application/json
+      description: Get currency exchange information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: alias
+        in: path
+        name: title
+        required: true
+        type: string
+      - description: 'ordering format: column decs/acs'
+        in: query
+        name: order
+        type: string
+      - description: spins per page
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: asking page
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.CurrencyExchange'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get currency exchange.
+      tags:
+      - currency
+    post:
+      consumes:
+      - application/json
+      description: Add a new exchange rate between the specified "from" currency and
+        the "to" currency (alias).
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Alias of the 'to' currency.
+        in: path
+        name: alias
+        required: true
+        type: string
+      - description: CurrencyExchangeRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyExchangeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.CurrencyExchange'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Add a new currency exchange rate.
+      tags:
+      - currency
+  /api/currency/multiplier:
+    delete:
+      consumes:
+      - application/json
+      description: Delete currency and bound multiplier by provider_id and integrator_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencyMultiplierIdentify
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyMultiplierIdentify'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete currency for specific provider and integrator.
+      tags:
+      - currency
+    post:
+      consumes:
+      - application/json
+      description: Create new currency and bound multiplier by provider_id and integrator_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateCurrencyMultiplier
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyMultiplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.CurrencyMultiplier'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create new currency for specific provider and integrator.
+      tags:
+      - currency
+    put:
+      consumes:
+      - application/json
+      description: Updates currency and bound multiplier by provider_id and integrator_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateCurrencyMultiplier
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyMultiplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.CurrencyMultiplier'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Updates currency for specific provider and integrator.
+      tags:
+      - currency
+  /api/currency/multiplier/download:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows you to search for currency data based on filters
+        and download it as an Excel file.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Search Criteria
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencySearchRequest'
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: Excel file with currency data
+          schema:
+            type: file
+      security:
+      - X-Authenticate: []
+      summary: Download currency data as an Excel file
+      tags:
+      - currency
+  /api/currency/multiplier/get:
+    post:
+      consumes:
+      - application/json
+      description: Get currency multiplier information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencyMultiplierIdentify
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyMultiplierIdentify'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.CurrencyMultiplier'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get currency multiplier.
+      tags:
+      - currency
+  /api/currency/multiplier/search:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Filtering can be done by organization_pair_id or you can send an empty request body
+        and get all currency.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencySearch
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencySearchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.CurrencyMultiplier'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get all currency by filter.
+      tags:
+      - currency
+  /api/currency/multiplier/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This endpoint allows you to upload currency data from an Excel
+        file and save it to the database.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Organization Pair ID (UUID format)
+        in: formData
+        name: organization_pair_id
+        required: true
+        type: string
+      - description: Excel file containing currency data
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Uploaded currency data
+          schema:
+            items:
+              $ref: '#/definitions/entities.CurrencyAttributes'
+            type: array
+      security:
+      - X-Authenticate: []
+      summary: Upload currency data from an Excel file
+      tags:
+      - currency
+  /api/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Dashboard.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Account'
+      summary: Dashboard.
+      tags:
+      - dashboard
+  /api/debug:
+    get:
+      consumes:
+      - application/json
+      description: Check debug data.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Debug call.
+      tags:
+      - meta
+  /api/dictionaries/currencies:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available currencies.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available currencies.
+      tags:
+      - dictionaries
+  /api/dictionaries/games:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available games for filters.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Game'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available games.
+      tags:
+      - dictionaries
+  /api/dictionaries/hosts:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available hosts for filters.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available hosts.
+      tags:
+      - dictionaries
+  /api/dictionaries/integrator-operators:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available integrator/operator pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties:
+                    items:
+                      type: string
+                    type: array
+                  type: object
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available integrator/operator pair.
+      tags:
+      - dictionaries
+  /api/dictionaries/integrators:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available integrators.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available integrators.
+      tags:
+      - dictionaries
+  /api/dictionaries/jurisdictions:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available jurisdictions.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available jurisdictions.
+      tags:
+      - dictionaries
+    post:
+      consumes:
+      - application/json
+      description: Add new jurisdiction.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: AddDictionaryValue
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add new jurisdiction.
+      tags:
+      - dictionaries
+  /api/dictionaries/jurisdictions/{jurisdiction}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete jurisdiction.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Jurisdiction
+        in: path
+        name: jurisdiction
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Delete jurisdiction.
+      tags:
+      - dictionaries
+  /api/dictionaries/languages:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available languages.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available languages.
+      tags:
+      - dictionaries
+    post:
+      consumes:
+      - application/json
+      description: Add new language.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: AddDictionaryValue
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add new language.
+      tags:
+      - dictionaries
+  /api/dictionaries/languages/{language}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete language.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Language
+        in: path
+        name: language
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Delete language.
+      tags:
+      - dictionaries
+  /api/dictionaries/locales:
+    get:
+      consumes:
+      - application/json
+      description: Get list of available locales.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available locales.
+      tags:
+      - dictionaries
+    post:
+      consumes:
+      - application/json
+      description: Add new locale.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: AddDictionaryValue
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.Dictionary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add new locale.
+      tags:
+      - dictionaries
+  /api/dictionaries/locales/{locale}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete locale.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Locale
+        in: path
+        name: locale
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Delete locale.
+      tags:
+      - dictionaries
+  /api/dictionaries/main-currencies:
+    get:
+      consumes:
+      - application/json
+      description: Get list of main currencies.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get main currencies.
+      tags:
+      - dictionaries
+  /api/files:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.FileResponse'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get list of files by organizationId.
+      tags:
+      - files
+  /api/files/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: file_id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: file
+          schema:
+            type: ""
+      security:
+      - X-Authenticate: []
+      summary: Download file by id.
+      tags:
+      - files
+  /api/files/ws/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin. Websocket.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: file_id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      security:
+      - X-Authenticate: []
+      summary: Check file generation status.
+      tags:
+      - files
+  /api/game:
+    get:
+      consumes:
+      - application/json
+      description: All games.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: rows offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order field
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Game'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get game list.
+      tags:
+      - game
+    post:
+      consumes:
+      - application/json
+      description: Create game.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Game creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Game'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create a new game.
+      tags:
+      - game
+  /api/game/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete game.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete game.
+      tags:
+      - game
+    get:
+      consumes:
+      - application/json
+      description: Get game information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Game'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get game.
+      tags:
+      - game
+    put:
+      consumes:
+      - application/json
+      description: Updates game information.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Game update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Game'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Updates game information.
+      tags:
+      - game
+  /api/game/search:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Filtering can be done by organization_id or you can send an empty request body
+        and get all games
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: Game get list request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GameListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Game'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get games by filter.
+      tags:
+      - game
+  /api/health:
+    get:
+      consumes:
+      - application/json
+      description: Check service health.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.HealthResponse'
+      summary: Check health.
+      tags:
+      - meta
+  /api/info:
+    get:
+      consumes:
+      - application/json
+      description: Check service tag.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.InfoResponse'
+      summary: Check tag.
+      tags:
+      - meta
+  /api/info/environment_name:
+    get:
+      consumes:
+      - application/json
+      description: Return backoffice environment name.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - X-Authenticate: []
+      summary: Get environment_name.
+      tags:
+      - info
+  /api/info/logo:
+    get:
+      consumes:
+      - application/json
+      description: Return backoffice logo url.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - X-Authenticate: []
+      summary: Get logo url
+      tags:
+      - info
+  /api/lobby/start_game:
+    post:
+      consumes:
+      - application/json
+      description: Processes the request to the game lobby and returns the URL to
+        access the startGame.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateLobbyRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LobbyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - X-Authenticate: []
+      summary: Generate startGame lobby link.
+      tags:
+      - lobby
+  /api/organizations:
+    get:
+      consumes:
+      - application/json
+      description: Available backoffice roles.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: rows offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order field
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Organization'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get organizations list.
+      tags:
+      - organizations
+    post:
+      consumes:
+      - application/json
+      description: Create organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateOrganizationRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertOrganizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Organization'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add new organization.
+      tags:
+      - organizations
+  /api/organizations/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete organization.
+      tags:
+      - organizations
+    get:
+      consumes:
+      - application/json
+      description: Get organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Organization'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get organization.
+      tags:
+      - organizations
+    put:
+      consumes:
+      - application/json
+      description: Update organization.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateOrganizationRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertOrganizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Organization'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Update organization.
+      tags:
+      - organizations
+  /api/organizations/{id}/game:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        The provider_id field is required. If you send only the provider_id,
+        all games from the provider will be deleted. To delete selected games, fill out the game_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: IntegratorGameRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorGameRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: delete integrator game.
+      tags:
+      - organizations
+    get:
+      consumes:
+      - application/json
+      description: get integrator games.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.IntegratorGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: get integrator games.
+      tags:
+      - organizations
+    post:
+      consumes:
+      - application/json
+      description: |-
+        The provider_id field is required. If you send only the provider_id,
+        all games from the provider will be added. To add selected games, fill out the game_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: IntegratorGameRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorGameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.IntegratorGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: add integrator game.
+      tags:
+      - organizations
+    put:
+      consumes:
+      - application/json
+      description: The provider_id field is required. If you send only the provider_id,
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: IntegratorGameRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateIntegratorGameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.IntegratorGame'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: update integrator game.
+      tags:
+      - organizations
+  /api/organizations/{id}/integrators:
+    get:
+      consumes:
+      - application/json
+      description: Available backoffice roles.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Organization'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get organization integrator list by provider.
+      tags:
+      - organizations
+  /api/organizations/{id}/operators:
+    get:
+      consumes:
+      - application/json
+      description: Available operators.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Organization'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get organization operator list by integrator.
+      tags:
+      - organizations
+  /api/organizations/{id}/wager_set:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        The provider_id field is required. If you send only the provider_id,
+        all games from the provider will be deleted. To delete selected games, fill out the game_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: IntegratorGameWagerSetRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorGameWagerSetRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: delete integrator game wager set.
+      tags:
+      - organizations
+    get:
+      consumes:
+      - application/json
+      description: get integrator games wager sets.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.IntegratorGameWagerSet'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: get integrator games wager sets.
+      tags:
+      - organizations
+    post:
+      consumes:
+      - application/json
+      description: |-
+        The provider_id field is required. If you send only the provider_id,
+        all games from the provider will be added. To add selected games, fill out the game_id.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: IntegratorGameWagerSetRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorGameWagerSetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.IntegratorGameWagerSet'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: add integrator game wager sets.
+      tags:
+      - organizations
+    put:
+      consumes:
+      - application/json
+      description: The provider_id field is required. If you send only the provider_id,
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: organization_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateIntegratorGameWagerSetRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateIntegratorGameWagerSetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.IntegratorGameWagerSet'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: update integrator game wager set.
+      tags:
+      - organizations
+  /api/organizations/add_operator_pair:
+    post:
+      consumes:
+      - application/json
+      description: Add operator pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: IntegratorOperatorPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorOperatorPair'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.ProviderIntegratorPair'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add operator pair.
+      tags:
+      - organizations
+  /api/organizations/add_organization_pair:
+    post:
+      consumes:
+      - application/json
+      description: Add organization pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencyOrganizationPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyOrganizationPair'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.ProviderIntegratorPair'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add organization pair.
+      tags:
+      - organizations
+  /api/organizations/delete_operator_pair:
+    delete:
+      consumes:
+      - application/json
+      description: Delete operator pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: IntegratorOperatorPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorOperatorPair'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete operator pair.
+      tags:
+      - organizations
+  /api/organizations/delete_organization_pair:
+    delete:
+      consumes:
+      - application/json
+      description: Delete organization pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencyOrganizationPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyOrganizationPair'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete organization pair.
+      tags:
+      - organizations
+  /api/organizations/get_operator_pair:
+    post:
+      consumes:
+      - application/json
+      description: Get operator pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: IntegratorOperatorPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.IntegratorOperatorPair'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.ProviderIntegratorPair'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get operator pair.
+      tags:
+      - organizations
+  /api/organizations/get_organization_pair:
+    post:
+      consumes:
+      - application/json
+      description: Get organization pair.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CurrencyOrganizationPair
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CurrencyOrganizationPair'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.ProviderIntegratorPair'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get organization pair.
+      tags:
+      - organizations
+  /api/permissions:
+    get:
+      consumes:
+      - application/json
+      description: Dashboard.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: rows offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order field
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Permission'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get permissions list.
+      tags:
+      - permission
+    post:
+      consumes:
+      - application/json
+      description: Create permission.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreatePermissionRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertPermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Permission'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create new permission.
+      tags:
+      - permission
+  /api/permissions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete permission.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: permission_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete permission.
+      tags:
+      - permission
+    get:
+      consumes:
+      - application/json
+      description: Get permission.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: permission_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Permission'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get permission.
+      tags:
+      - permission
+    put:
+      consumes:
+      - application/json
+      description: Update permission.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: permission_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdatePermissionRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertPermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Permission'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Update new permission.
+      tags:
+      - permission
+  /api/public_reports/sessions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: For all users.
+      parameters:
+      - description: session_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        type: string
+      - description: game
+        in: query
+        name: game
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.GamingSession'
+              type: object
+      summary: Get public spin information.
+      tags:
+      - reports
+  /api/public_reports/spins/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get spin information for all users.
+      parameters:
+      - description: spin_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Spin'
+              type: object
+      summary: Get public spin.
+      tags:
+      - spins
+  /api/reports/aggregated/by_country:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency name
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.AggregatedReportByGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report.
+      tags:
+      - reports
+  /api/reports/aggregated/by_country/{game}:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency name
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: ending_at
+        type: string
+      - description: country
+        in: path
+        name: country
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.AggregatedReportByGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report.
+      tags:
+      - reports
+  /api/reports/aggregated/by_country/csv:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report csv.
+      tags:
+      - reports
+  /api/reports/aggregated/by_country/xlsx:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated xlsx.
+      tags:
+      - reports
+  /api/reports/aggregated/by_game:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency name
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.AggregatedReportByGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report.
+      tags:
+      - reports
+  /api/reports/aggregated/by_game/{country}:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency name
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05-00:00'
+        in: query
+        name: ending_at
+        type: string
+      - description: country
+        in: path
+        name: country
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.AggregatedReportByGame'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report.
+      tags:
+      - reports
+  /api/reports/aggregated/by_game/csv:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated report csv.
+      tags:
+      - reports
+  /api/reports/aggregated/by_game/xlsx:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get aggregated xlsx.
+      tags:
+      - reports
+  /api/reports/currencies:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get available currencies.
+      tags:
+      - reports
+  /api/reports/financial:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FinancialReport'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get financial report.
+      tags:
+      - reports
+  /api/reports/financial/csv:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get financial report csv.
+      tags:
+      - reports
+  /api/reports/financial/xlsx:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get financial report csv.
+      tags:
+      - reports
+  /api/reports/sessions:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      - description: rtp from
+        in: query
+        name: rtp_from
+        type: string
+      - description: 'ordering format: column decs/acs'
+        in: query
+        name: order
+        type: string
+      - description: spins per page
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: asking page
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.GamingSession'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spin pagination.
+      tags:
+      - reports
+  /api/reports/sessions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: session_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.GamingSession'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spin information.
+      tags:
+      - reports
+  /api/reports/sessions/csv:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get gaming session report csv.
+      tags:
+      - reports
+  /api/reports/sessions/xlsx:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get gaming session report xlsx.
+      tags:
+      - reports
+  /api/reports/spins:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      - description: 'ordering format: column decs/acs'
+        in: query
+        name: order
+        type: string
+      - description: spins per page
+        in: query
+        name: limit
+        required: true
+        type: string
+      - description: asking page
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Spin'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spin pagination.
+      tags:
+      - reports
+  /api/reports/spins/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get spin information.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: spin_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Spin'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spin.
+      tags:
+      - spins
+  /api/reports/spins/csv:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spins report csv.
+      tags:
+      - reports
+  /api/reports/spins/xlsx:
+    get:
+      consumes:
+      - application/json
+      description: Only for admin.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      - description: integrator name
+        in: query
+        name: integrator
+        type: string
+      - description: operator name
+        in: query
+        name: operator
+        type: string
+      - description: session id
+        in: query
+        name: session_id
+        type: string
+      - description: round id
+        in: query
+        name: round_id
+        type: string
+      - description: game name
+        in: query
+        name: game
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: starting_from
+        type: string
+      - description: 'time format: 2006-01-02 15:04:05'
+        in: query
+        name: ending_at
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.FileReportResponse'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get spins report xlsx.
+      tags:
+      - reports
+  /api/reports/users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user information.
+      parameters:
+      - description: Insert your refresh token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: user_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: currency
+        in: query
+        name: currency
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.UserReport'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get user.
+      tags:
+      - users
+  /api/roles:
+    get:
+      consumes:
+      - application/json
+      description: Available backoffice roles.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: rows offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: order field
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.Role'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get roles list.
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      description: Create role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: CreateRoleRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Role'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Add new role.
+      tags:
+      - roles
+  /api/roles/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: role_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete role.
+      tags:
+      - roles
+    get:
+      consumes:
+      - application/json
+      description: Get existing role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: role_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Role'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get role.
+      tags:
+      - roles
+    put:
+      consumes:
+      - application/json
+      description: Update existing role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: role_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateRoleRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpsertRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.Role'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Update role.
+      tags:
+      - roles
+  /api/roles/{id}/permissions:
+    delete:
+      consumes:
+      - application/json
+      description: Delete permissions from role.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: role_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: RolePermissionsRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RolePermissionsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Revoke permissions.
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      description: Add permissions.
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: role_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: RolePermissionsRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.RolePermissionsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - X-Authenticate: []
+      summary: Add permissions.
+      tags:
+      - roles
+  /api/wager_set:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: rows limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entities.WagerSet'
+                  type: array
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get wager sets.
+      tags:
+      - wager_set
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: requests.CreateWagerSetRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateWagerSetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.WagerSet'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Create wager set.
+      tags:
+      - wager_set
+  /api/wager_set/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: wager_set_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Authenticate: []
+      summary: Delete wager set.
+      tags:
+      - wager_set
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: wager_set_id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.WagerSet'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Get wager set.
+      tags:
+      - wager_set
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Insert your access token
+        in: header
+        name: X-Auth
+        required: true
+        type: string
+      - description: wager_set_id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: requests.UpdateWagerSetRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateWagerSetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entities.WagerSet'
+              type: object
+      security:
+      - X-Authenticate: []
+      summary: Update wager set.
+      tags:
+      - wager_set
+swagger: "2.0"

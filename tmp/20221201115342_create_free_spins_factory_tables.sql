@@ -1,0 +1,44 @@
+-- +goose Up
+-- +goose StatementBegin
+-- SELECT 'up SQL query';
+-- create table if not exists fs_campaigns (
+--     created_at timestamptz default now(),
+--     updated_at timestamptz,
+--     deleted_at timestamptz,
+--
+--     uuid       uuid default gen_random_uuid() primary key,
+--     created_by uuid references accounts (uuid),
+--     name varchar(255) not null,
+--     description text,
+--     start_date timestamptz,
+--     end_date timestamptz,
+--     type varchar(40),
+--
+--     token varchar(255),
+--     fs_type varchar(40),
+--     currencies varchar[],
+--     status varchar(255),
+--     coin_size int,
+--
+--     start_link text,
+--     recurring bool default false,
+--
+--     term_and_conditions_url text,
+-- );
+--
+-- create table if not exists fs_users (
+--     created_at timestamptz default now(),
+--     updated_at timestamptz,
+--     deleted_at timestamptz,
+--
+--     uuid       uuid default gen_random_uuid() primary key,
+--     fs_uuid uuid references fs_campaigns (uuid),
+--     user_token text,
+--     currency varchar(3)
+-- );
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+-- SELECT 'down SQL query';
+-- +goose StatementEnd

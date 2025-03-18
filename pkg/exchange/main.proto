@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package exchange;
+
+option go_package = "./exchange";
+
+import "google/protobuf/timestamp.proto";
+
+service ExchangeService {
+  rpc GetRates (RatesIn) returns (RatesOut) {}
+  rpc UpdateCurrencies (UpdateCurrency) returns (Status) {}
+  rpc GetAllCurrencyRates (AllCurrencyRatesIn) returns (AllCurrencyRatesOut) {}
+
+  rpc AddCurrencyRate (AddCurrencyRateIn) returns (CurrencyRates) {}
+  rpc DeleteCurrencyRate (DeleteCurrencyRateIn) returns (Status) {}
+
+  rpc HealthCheck (stream Status) returns (stream Status) {}
+}
+
+message RatesIn {
+  string from = 1;
+  repeated string to = 2;
+  google.protobuf.Timestamp start = 3;
+  google.protobuf.Timestamp end = 4;
+}
+
+message RatesOut {
+  map<string, RateItems> bag = 1 ;
+}
+
+message RateItem {
+  google.protobuf.Timestamp date = 1;
+  double rate = 2;
+}
+
+
+message RateItems {
+  repeated RateItem items = 1;
+}
+
+message Rate {
+  google.protobuf.Timestamp date = 1;
+  string from = 2;
+  string to = 3;
+  double rate = 4;
+}
+
+message Status {
+  string status = 1;
+}
+
+message UpdateCurrency {
+  string currency = 1;
+  string base_currency = 2;
+}
+
+message AllCurrencyRatesIn {
+  string order = 1;
+  uint64 page = 2;
+  uint64 limit = 3;
+  string currency = 4;
+}
+
+message AllCurrencyRatesOut {
+  repeated CurrencyRates items = 1;
+  uint64 current_page = 2;
+  uint64 limit = 3;
+  uint64 total = 4;
+}
+
+message CurrencyRates {
+  google.protobuf.Timestamp created_at = 1;
+  string from = 2;
+  string to = 3;
+  double rate = 4;
+}
+
+message AddCurrencyRateIn {
+  string from = 1;
+  string to = 2;
+  double rate = 3;
+}
+
+message DeleteCurrencyRateIn {
+  string from = 1;
+  string to = 2;
+  double rate = 3;
+  google.protobuf.Timestamp created_at = 4;
+}

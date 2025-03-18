@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package backoffice;
+
+option go_package = "./backoffice";
+
+service Backoffice {
+  rpc HasAccess (HasAccessIn) returns (HasAccessOut) {}
+  rpc GameList (GameListIn) returns (GameListOut) {}
+  rpc GameListFull (GameListIn) returns (GameListOutFull) {}
+  rpc GetProvider (GetProviderIn) returns (GetProviderOut) {}
+  rpc HealthCheck (stream Status) returns (stream Status) {}
+  rpc GetIntegratorGameSettings (IntegratorGameSettingsIn) returns (IntegratorGameSettingsOut) {}
+  rpc GetGameData (GameDataByIntegratorName) returns (Game) {}
+  rpc GetGameDataByApi (HasAccessIn) returns (Game) {}
+  rpc GetCurrencies (CurrenciesIn) returns (CurrenciesOut) {}
+  rpc GetMultiplierByCurrency (GetMultiplierIn) returns (GetMultiplierOut) {}
+  rpc GetIntegratorApiKey (IntegratorApiKeyIn) returns (IntegratorApiKeyOut) {}
+}
+
+message Status {
+  string status = 1;
+}
+
+message HasAccessIn {
+  string api_key = 1;
+  string game = 2;
+}
+
+message GameListIn {
+  string api_key = 1;
+}
+
+message GameDataByIntegratorName {
+  string name = 1;
+  string game = 2;
+}
+
+message GetProviderIn {
+  string game_name = 1;
+}
+
+message GetProviderOut {
+  string provider = 1;
+}
+
+message HasAccessOut {
+  bool has_access = 1;
+  string integrator = 2;
+}
+
+message GameListOut {
+  repeated string games = 1;
+}
+
+message GameListOutFull {
+  repeated Game games = 1;
+}
+
+message Game {
+  string id = 1;
+  string name = 2;
+  string api_url = 3;
+  string client_url = 4;
+  bool is_public = 5;
+  bool is_statistic_shown = 6;
+  repeated string currencies = 7;
+  repeated string languages = 8;
+  bool is_demo = 9;
+  bool is_freespins = 10;
+  optional int64 rtp = 11;
+  optional string volatility = 12;
+  repeated int64 available_rtp = 13;
+  repeated string available_volatility = 14;
+  repeated string user_locales = 15;
+  bool online_volatility = 16;
+  repeated WagerSets available_wager_sets = 17;
+  int64 gamble_double_up = 18;
+  WagerSets wager_set = 19;
+  string provider = 20;
+}
+
+message IntegratorGameSettingsOut {
+  repeated int64 wagers = 1;
+  optional int64 rtp = 2;
+  optional string volatility = 3;
+  bool short_link = 4;
+}
+
+message WagerSets {
+  string id = 1;
+  repeated int64 wager_levels = 2;
+  int64 default_wager = 3;
+}
+
+message CurrenciesOut {
+  repeated Currency currencies = 1;
+}
+
+message Currency {
+  string currency = 1;
+  string base_currency = 2;
+}
+
+message CurrenciesIn {
+  repeated CurrenciesFilter CurrenciesFilter = 1;
+}
+
+message CurrenciesFilter {
+  string key = 1;
+  string value = 2;
+}
+
+message GetMultiplierIn {
+  string currency = 1;
+  string api_key = 2;
+}
+
+message ProviderMultiplierEntry {
+  string provider = 1;
+  int64 multiplier = 2;
+}
+
+message GetMultiplierOut {
+  repeated ProviderMultiplierEntry provider_multipliers = 1;
+}
+
+message IntegratorApiKeyIn {
+  string integrator = 1;
+}
+
+message IntegratorApiKeyOut {
+  string api_key = 1;
+}
+
+message IntegratorGameSettingsIn {
+  string api_key = 1;
+  string game = 2;
+  string currency = 3;
+}

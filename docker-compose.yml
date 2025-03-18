@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  backoffice:
+    container_name: backoffice-service
+    build:
+      context: .
+      args:
+        - MODE=local
+    ports:
+      - "80:80"
+    restart: always

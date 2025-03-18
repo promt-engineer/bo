@@ -1,0 +1,96 @@
+env: dev
+logLevel: debug
+frontURL: https://backoffice.dev.heronbyte.com
+sendEmail: business@ejaw.net
+resetPasswordURL: https://backoffice.dev.heronbyte.com
+
+server:
+  host: "0.0.0.0"
+  port: 80
+  readTimeout: "300s"
+  writeTimeout: "300s"
+
+rpc:
+  host: 0.0.0.0
+  port: 7100
+  maxProcessingTime: 300000ms
+
+history:
+  host: host.docker.internal
+  port: 7500
+  isSecure: false
+
+database:
+  host: host.docker.internal
+  port: 5433
+  name: "office"
+  user: "postgres"
+  pass: "12345"
+  connectionTimeout: "30s"
+  compression: "zlib"
+  pingInterval: "30s"
+  minConnections: 10
+  maxConnections: 20
+
+redis:
+  host: host.docker.internal
+  port: 6379
+  pass:
+  prefix: "svc.backoffice"
+
+queue:
+  listeners:
+    backoffice:
+      exchangeBase: backoffice
+      exchangeKind: "direct"
+      queueBase: backoffice
+      bindingKey: backoffice
+      hashedQueueName: false
+      durable: true
+      autoDelete: false
+      exchangeInternal: true
+      exchangeNoWait: true
+      count: 10
+  publishers:
+    overlord:
+      exchangeBase: overlord
+      exchangeKind: "fanout"
+      bindingKey: overlord
+  host:
+    name: main
+    host: host.docker.internal
+    port: 5672
+    username: user
+    password: 12345
+  options:
+    retryTimes: 5
+    backOffSeconds: 2
+
+mailgun:
+  domain: "ejaw.net"
+  apiKey:
+
+jwt:
+  headerName: "X-Auth"
+  queryName: "token"
+  headerScheme: ""
+  fingerprint: "local"
+  # By default, one month
+  accessTokenLifetime: "24h"
+  # By default, three months
+  refreshTokenLifetime: "720h"
+  issuer: "svc.backoffice"
+
+totp:
+  issuer: backoffice
+  secretSize: 1
+  algorithm: 2
+  period: 72h
+  digits: 6
+
+tracer:
+  url: http://host.docker.internal:14268/api/traces
+  serviceName: backoffice
+
+file:
+  ttl: "1h"
